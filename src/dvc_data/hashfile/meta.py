@@ -50,9 +50,12 @@ class Meta:
             import base64
 
             etag = base64.b64decode(info["etag"]).hex()
-        elif protocol and protocol.startswith("http"):
-            if "ETag" in info or "Content-MD5" in info:
-                checksum = info.get("ETag") or info.get("Content-MD5")
+        elif (
+            protocol
+            and protocol.startswith("http")
+            and ("ETag" in info or "Content-MD5" in info)
+        ):
+            checksum = info.get("ETag") or info.get("Content-MD5")
 
         mtime = info.get("mtime")
         if mtime is None and protocol and protocol.startswith("http"):
